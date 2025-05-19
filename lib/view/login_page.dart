@@ -36,10 +36,10 @@ class _LoginPageState extends State<LoginPage> {
                 },
                 child: const Text('Login'),
               ),
-              // TextButton(
-              //   onPressed: () => Navigator.pushNamed(context, '/register'),
-              //   child: const Text('Do not have an account? Register'),
-              // ),
+              TextButton(
+                onPressed: () => Navigator.pushNamed(context, '/register'),
+                child: const Text('Do not have an account? Register'),
+              ),
             ],
           ),
         ),
