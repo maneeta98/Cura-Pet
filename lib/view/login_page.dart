@@ -30,12 +30,12 @@ class _LoginPageState extends State<LoginPage> {
                 obscureText: true,
               ),
               const SizedBox(height: 20),
-              // ElevatedButton(
-              //   onPressed: () {
-              //     Navigator.pushReplacementNamed(context, '/dashboard');
-              //   },
-              //   child: const Text('Login'),
-              // ),
+              ElevatedButton(
+                onPressed: () {
+                  // Navigator.pushReplacementNamed(context, '/dashboard');
+                },
+                child: const Text('Login'),
+              ),
               // TextButton(
               //   onPressed: () => Navigator.pushNamed(context, '/register'),
               //   child: const Text('Do not have an account? Register'),
