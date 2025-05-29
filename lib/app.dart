@@ -1,4 +1,6 @@
-import 'package:cura_pet/view/splash_screen.dart';
+import 'package:cura_pet/bottom/dashboard.dart';
+import 'package:cura_pet/theme/theme_data.dart';
+
 import 'package:flutter/material.dart';
 
 class App extends StatelessWidget {
@@ -6,6 +8,10 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: SplashScreen());
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: DashboardScreen(),
+      theme: getApplicationTheme(),
+    );
   }
 }
