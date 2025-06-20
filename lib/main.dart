@@ -1,7 +1,12 @@
-import 'package:cura_pet/app.dart';
+import 'package:cura_pet/app/app.dart';
+import 'package:cura_pet/app/service_locator/service_locator.dart';
+import 'package:cura_pet/core/network/local/hive_service.dart';
 import 'package:flutter/material.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await HiveService().init();
+  await initDependencies();
   runApp(App());
 }
 

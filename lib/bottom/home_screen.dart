@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  const HomeScreen({super.key, required bool showSnackbar});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();

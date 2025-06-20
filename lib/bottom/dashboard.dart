@@ -16,7 +16,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   int _selectedIndex = 0;
 
   final List<Widget> _screens = [
-    const HomeScreen(),
+    const HomeScreen(showSnackbar: false),
     const NoticesScreen(),
     const AppointmentScreen(),
     const AboutScreen(),
