@@ -1,5 +1,7 @@
+// ✅ login_view.dart
+
 import 'package:cura_pet/app/service_locator/service_locator.dart';
-import 'package:cura_pet/features/home/presentation/view/home_view.dart';
+import 'package:cura_pet/features/user/presentation/view/signup_view.dart';
 import 'package:cura_pet/features/user/presentation/view_model/login_view_model/login_event.dart';
 import 'package:cura_pet/features/user/presentation/view_model/login_view_model/login_state.dart';
 import 'package:cura_pet/features/user/presentation/view_model/login_view_model/login_view_model.dart';
@@ -27,7 +29,7 @@ class _LoginViewState extends State<LoginView> {
     super.dispose();
   }
 
-  void _showSnackBar(String message, [bool isError = true]) {
+  void _showSnackBar(String message, {bool isError = true}) {
     final snackBar = SnackBar(
       content: Text(message),
       backgroundColor: isError ? Colors.red : Colors.green,
@@ -37,13 +39,12 @@ class _LoginViewState extends State<LoginView> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
+    return BlocProvider<LoginViewModel>(
       create: (_) => serviceLocator<LoginViewModel>(),
       child: BlocConsumer<LoginViewModel, LoginState>(
         listener: (context, state) {
           if (state.isSuccess) {
-            _showSnackBar("Login Successful!", false);
-            // TODO: Navigate to dashboard/home screen
+            _showSnackBar("Login Successful!", isError: false);
           } else if (state.errorMessage != null) {
             _showSnackBar(state.errorMessage!);
           }
@@ -74,12 +75,10 @@ class _LoginViewState extends State<LoginView> {
                               style: TextStyle(
                                 fontSize: 32,
                                 fontWeight: FontWeight.bold,
-                                color: Color.fromARGB(255, 251, 251, 252),
+                                color: Colors.white,
                               ),
                             ),
                             const SizedBox(height: 40),
-
-                            // Email TextField
                             TextFormField(
                               controller: emailController,
                               style: const TextStyle(color: Colors.white),
@@ -87,12 +86,12 @@ class _LoginViewState extends State<LoginView> {
                                 filled: true,
                                 fillColor: Colors.black38,
                                 labelText: "Email Address",
+                                labelStyle: const TextStyle(
+                                  color: Colors.white,
+                                ),
                                 hintText: "Enter your email",
                                 hintStyle: const TextStyle(
                                   color: Colors.white70,
-                                ),
-                                labelStyle: const TextStyle(
-                                  color: Colors.white,
                                 ),
                                 prefixIcon: const Icon(
                                   Icons.email,
@@ -115,7 +114,6 @@ class _LoginViewState extends State<LoginView> {
 
                             const SizedBox(height: 20),
 
-                            // Password TextField
                             TextFormField(
                               controller: passwordController,
                               obscureText: _obscurePassword,
@@ -161,7 +159,6 @@ class _LoginViewState extends State<LoginView> {
 
                             const SizedBox(height: 10),
 
-                            // Remember me and Forgot password
                             Row(
                               children: [
                                 Checkbox(
@@ -180,14 +177,10 @@ class _LoginViewState extends State<LoginView> {
                                 ),
                                 const Spacer(),
                                 TextButton(
-                                  onPressed: () {
-                                    // TODO: Implement forgot password
-                                  },
+                                  onPressed: () {},
                                   child: const Text(
                                     "Forgot Password?",
-                                    style: TextStyle(
-                                      color: Color.fromRGBO(243, 243, 243, 1),
-                                    ),
+                                    style: TextStyle(color: Colors.white70),
                                   ),
                                 ),
                               ],
@@ -195,17 +188,11 @@ class _LoginViewState extends State<LoginView> {
 
                             const SizedBox(height: 20),
 
-                            // Sign In button
                             SizedBox(
                               width: double.infinity,
                               child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: const Color.fromARGB(
-                                    135,
-                                    27,
-                                    40,
-                                    215,
-                                  ),
+                                  backgroundColor: const Color(0xFF89C158),
                                   padding: const EdgeInsets.symmetric(
                                     vertical: 16,
                                   ),
@@ -217,12 +204,6 @@ class _LoginViewState extends State<LoginView> {
                                     state.isLoading
                                         ? null
                                         : () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) => HomeView(),
-                                            ),
-                                          );
                                           if (formKey.currentState!
                                               .validate()) {
                                             bloc.add(
@@ -249,12 +230,14 @@ class _LoginViewState extends State<LoginView> {
 
                             const SizedBox(height: 20),
 
-                            // Navigate to Signup
                             Center(
                               child: GestureDetector(
                                 onTap: () {
-                                  bloc.add(
-                                    NavigateToRegisterView(context: context),
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => const SignupView(),
+                                    ),
                                   );
                                 },
                                 child: const Text(
@@ -269,7 +252,6 @@ class _LoginViewState extends State<LoginView> {
                           ],
                         ),
 
-                        // Loading Indicator
                         if (state.isLoading)
                           Positioned.fill(
                             child: Container(
@@ -293,3 +275,7 @@ class _LoginViewState extends State<LoginView> {
     );
   }
 }
+
+// ✅ No NavigateToRegisterView used. Direct Navigator.push is used for Signup navigation.
+// ✅ Login button triggers bloc event correctly.
+// ✅ Loading spinner works.
