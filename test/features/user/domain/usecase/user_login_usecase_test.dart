@@ -1,38 +1,81 @@
-import 'package:flutter_test/flutter_test.dart';
 import 'package:dartz/dartz.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/mockito.dart';
+
+// Your imports
 import 'package:cura_pet/features/user/domain/usecase/user_login_usecase.dart';
-import 'package:cura_pet/features/user/domain/entity/user_entity.dart';
-import 'package:mocktail/mocktail.dart';
+import 'package:cura_pet/features/user/domain/repository/user_repository.dart';
 import 'package:cura_pet/core/error/failure.dart';
 
-class MockLoginRepository extends Mock implements UserLoginUseCase {}
+// Mock repository
+class MockUserRepository extends Mock implements IUserRepository {}
 
 void main() {
-  late UserLoginUseCase usecase;
+  late MockUserRepository mockUserRepository;
+  late UserLoginUseCase loginUseCase;
+
   setUp(() {
-    usecase = MockLoginRepository();
+    mockUserRepository = MockUserRepository();
+    loginUseCase = UserLoginUseCase(userRepository: mockUserRepository);
   });
 
-  test('should return token when login is successful', () async {
+  test('should return token on successful login', () async {
+    const email = 'manita@example.com';
+    const password = 'test123';
+    const token = 'token_123';
+
+    // Arrange
     when(
-      () => usecase.call(any()),
-    ).thenAnswer((_) async => const Right("token_123"));
+      mockUserRepository.loginUser(email, password),
+    ).thenAnswer((_) async => const Right(token));
 
-    final result = await usecase(
-      LoginParams(email: "test@gmail.com", password: "pass123"),
+    // Act
+    final result = await loginUseCase(
+      const LoginParams(email: email, password: password),
     );
 
-    expect(result, const Right("token_123"));
-    verify(() => usecase.call(any())).called(1);
+    // Assert
+    expect(result, const Right(token));
+    verify(mockUserRepository.loginUser(email, password)).called(1);
+    verifyNoMoreInteractions(mockUserRepository);
   });
 
-  test('should return failure when login fails', () async {
-    when(() => usecase.call(any())).thenAnswer(
-      (_) async => Left(ApiFailure(message: 'Invalid', statusCode: 401)),
+  test('should return Failure on login error', () async {
+    const email = 'manita@example.com';
+    const password = 'test123';
+    final failure = ServerFailure('Login failed');
+
+    when(
+      mockUserRepository.loginUser(email, password),
+    ).thenAnswer((_) async => Left(failure));
+
+    final result = await loginUseCase(
+      const LoginParams(email: email, password: password),
     );
 
-    final result = await usecase(LoginParams(email: "wrong", password: "fail"));
-
-    expect(result, isA<Left>());
+    expect(result, Left(failure));
+    verify(mockUserRepository.loginUser(email, password)).called(1);
+    verifyNoMoreInteractions(mockUserRepository);
   });
+}
+
+// Minimal Failure base class
+abstract class Failure {
+  final String message;
+  Failure({required this.message});
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Failure &&
+          runtimeType == other.runtimeType &&
+          message == other.message;
+
+  @override
+  int get hashCode => message.hashCode;
+}
+
+// Your ServerFailure extending Failure
+class ServerFailure extends Failure {
+  ServerFailure(String message) : super(message: message);
 }
