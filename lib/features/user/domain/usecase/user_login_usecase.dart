@@ -17,11 +17,17 @@ class LoginParams extends Equatable {
 class UserLoginUseCase implements UseCaseWithParams<String, LoginParams> {
   final IUserRepository _userRepository;
 
-  UserLoginUseCase({required IUserRepository userRepository})
-    : _userRepository = userRepository;
+  UserLoginUseCase(
+    MockUserRepository mockUserRepository, {
+    required IUserRepository userRepository,
+  }) : _userRepository = userRepository;
 
   @override
   Future<Either<Failure, String>> call(LoginParams params) {
     return _userRepository.loginUser(params.email, params.password);
   }
+}
+
+class MockUserRepository {
+  loginUser(String email, String password) {}
 }

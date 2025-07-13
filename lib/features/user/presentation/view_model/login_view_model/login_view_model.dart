@@ -7,7 +7,8 @@ import 'package:flutter/material.dart';
 class LoginViewModel extends Bloc<LoginEvent, LoginState> {
   final UserLoginUseCase loginUserUseCase;
 
-  LoginViewModel({required this.loginUserUseCase}) : super(const LoginState()) {
+  LoginViewModel(MockLoginUseCase mockUseCase, {required this.loginUserUseCase})
+    : super(const LoginState()) {
     on<LoginWithEmailAndPassword>(_onLoginWithEmailAndPassword);
   }
 
@@ -34,3 +35,5 @@ class LoginViewModel extends Bloc<LoginEvent, LoginState> {
     );
   }
 }
+
+class MockLoginUseCase {}

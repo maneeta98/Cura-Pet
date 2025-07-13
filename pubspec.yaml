@@ -54,6 +54,7 @@ dependencies:
   test_cov_console: ^0.2.2
   mocktail: ^1.0.4
   bloc_test: ^10.0.0
+  mockito: ^5.4.5
 
 dev_dependencies:
   flutter_test:

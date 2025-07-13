@@ -26,8 +26,10 @@ class UserRegisterUseCase
     implements UseCaseWithParams<void, RegisterUserParams> {
   final IUserRepository _userRepository;
 
-  UserRegisterUseCase({required IUserRepository userRepository})
-    : _userRepository = userRepository;
+  UserRegisterUseCase(
+    MockUserRegisterRepository repository, {
+    required IUserRepository userRepository,
+  }) : _userRepository = userRepository;
 
   @override
   Future<Either<Failure, void>> call(RegisterUserParams params) {
@@ -41,3 +43,5 @@ class UserRegisterUseCase
     return _userRepository.registerUser(userEntity);
   }
 }
+
+class MockUserRegisterRepository {}
