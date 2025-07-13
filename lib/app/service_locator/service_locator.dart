@@ -1,68 +1,7 @@
-// import 'package:cura_pet/core/network/local/hive_service.dart';
-// import 'package:cura_pet/features/user/data/data_source/local_datasource/user_local_datasource.dart';
-// import 'package:cura_pet/features/user/data/repository/local_repository/user_local_repository.dart';
-// import 'package:cura_pet/features/user/domain/repository/user_repository.dart';
-// import 'package:cura_pet/features/user/domain/usecase/user_login_usecase.dart';
-// import 'package:cura_pet/features/user/domain/usecase/user_register_usecase.dart';
-// import 'package:cura_pet/features/user/presentation/view_model/login_view_model/login_view_model.dart';
-// import 'package:cura_pet/features/user/presentation/view_model/register_view_model/register_view_model.dart';
-// import 'package:get_it/get_it.dart';
-
-// import '../../features/splash/view_model/splash_view_model.dart';
-
-// final serviceLocator = GetIt.instance;
-
-// Future<void> initDependencies() async {
-//   await _initHiveService();
-//   await _initAuthModule();
-//   await _initSplashModule();
-//   await _initDashboardModule();
-// }
-
-// Future<void> _initHiveService() async {
-//   serviceLocator.registerLazySingleton<HiveService>(() => HiveService());
-// }
-
-// Future<void> _initAuthModule() async {
-//   // Local Data Source
-//   serviceLocator.registerFactory(
-//     () => UserLocalDataSource(hiveService: serviceLocator<HiveService>()),
-//   );
-
-//   // Repository
-//   serviceLocator.registerFactory(
-//     () => UserLocalRepository(
-//       userLocalDataSource: serviceLocator<UserLocalDataSource>(),
-//     ),
-//   );
-
-//   // UseCases
-//   serviceLocator.registerFactory(
-//     () =>
-//         UserRegisterUseCase(userRepository: serviceLocator<IUserRepository>()),
-//   );
-
-//   serviceLocator.registerFactory(
-//     () => UserLoginUseCase(userRepository: serviceLocator<IUserRepository>()),
-//   );
-
-//   // ViewModels
-//   serviceLocator.registerFactory(() => RegisterViewModel);
-
-//   serviceLocator.registerFactory(
-//     () => LoginViewModel(_userLoginUseCase),
-//   );
-// }
-
-// Future<void> _initSplashModule() async {
-//   serviceLocator.registerFactory(() => SplashViewModel());
-// }
-
-// Future<void> _initDashboardModule() async {
-//   serviceLocator.registerFactory(() => DashboardViewModel());
-// }
-
+import 'package:cura_pet/app/shared_pref/token_shared_prefs.dart';
+import 'package:cura_pet/main.dart';
 import 'package:get_it/get_it.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 // Core Services
 import 'package:cura_pet/core/network/local/hive_service.dart';
@@ -84,6 +23,13 @@ final serviceLocator = GetIt.instance;
 
 /// Call this at app startup to register all dependencies
 Future<void> initDependencies() async {
+  // Initialize SharedPreferences first and register it
+  final sharedPrefs = await SharedPreferences.getInstance();
+  serviceLocator.registerSingleton<SharedPreferences>(sharedPrefs);
+  serviceLocator.registerLazySingleton(
+    () => TokenSharedPrefs(sharedPreferences: serviceLocator()),
+  );
+
   await _initCoreServices();
   await _initUserModule();
   await _initSplashModule();
@@ -125,7 +71,7 @@ Future<void> _initUserModule() async {
   );
 
   serviceLocator.registerFactory<LoginViewModel>(
-    () => LoginViewModel(serviceLocator<UserLoginUseCase>()),
+    () => LoginViewModel(loginUserUseCase: serviceLocator<UserLoginUseCase>()),
   );
 }
 
@@ -134,6 +80,6 @@ Future<void> _initSplashModule() async {
   serviceLocator.registerFactory<SplashViewModel>(() => SplashViewModel());
 }
 
-// Future<void> _initDashboardModule() async {
-//   serviceLocator.registerFactory(() => DashboardViewModel());
-// }
+Future<void> _initDashboardModule() async {
+  // serviceLocator.registerFactory(() => DashboardViewModel());
+}

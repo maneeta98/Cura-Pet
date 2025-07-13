@@ -1,6 +1,7 @@
 import 'package:cura_pet/app/app.dart';
 import 'package:cura_pet/app/service_locator/service_locator.dart';
 import 'package:cura_pet/core/network/local/hive_service.dart';
+import 'package:cura_pet/features/user/data/model/user_hive_model.dart';
 import 'package:flutter/material.dart';
 
 void main() async {
@@ -8,6 +9,14 @@ void main() async {
   await HiveService().init();
   await initDependencies();
   runApp(App());
+}
+
+class HiveService {
+  Future<void> init() async {}
+
+  Future login(String email, String password) async {}
+
+  Future<void> register(UserHiveModel userHiveModel) async {}
 }
 
 // import 'package:cura_pet/view/dashboard_page.dart';

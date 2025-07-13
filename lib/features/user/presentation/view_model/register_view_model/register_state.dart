@@ -17,4 +17,6 @@ class RegisterState extends Equatable {
 
   @override
   List<Object?> get props => [isLoading, isSuccess];
+
+  get errorMessage => null;
 }

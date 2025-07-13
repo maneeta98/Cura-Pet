@@ -1,5 +1,5 @@
-import 'package:cura_pet/features/home/view_model/home_state.dart';
-import 'package:cura_pet/features/home/view_model/home_view_model.dart';
+import 'package:cura_pet/features/home/presentation/view_model/home_state.dart';
+import 'package:cura_pet/features/home/presentation/view_model/home_view_model.dart';
 import 'package:cura_pet/shared/widgets/tab_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -53,6 +53,7 @@ class HomeView extends StatelessWidget {
     },
   ];
 
+  /// Builds the content below the tabs based on the selected tab index.
   Widget buildBottomContent(int selectedTab) {
     switch (selectedTab) {
       case 0:
@@ -92,54 +93,42 @@ class HomeView extends StatelessWidget {
               }).toList(),
         );
       case 1:
-        return Card(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-          margin: const EdgeInsets.symmetric(vertical: 6),
-          child: const Padding(
-            padding: EdgeInsets.all(12.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "Pet Care Tips",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                ),
-                SizedBox(height: 10),
-                Text(
-                  "• Provide fresh water daily\n• Feed a balanced diet\n• Schedule regular vet checkups\n• Daily exercise and playtime",
-                ),
-              ],
-            ),
-          ),
+        return buildCardContent(
+          title: "Pet Care Tips",
+          content:
+              "• Provide fresh water daily\n• Feed a balanced diet\n• Schedule regular vet checkups\n• Daily exercise and playtime",
         );
       case 2:
-        return Card(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-          margin: const EdgeInsets.symmetric(vertical: 6),
-          child: const Padding(
-            padding: EdgeInsets.all(12.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "Challenges",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                ),
-                SizedBox(height: 10),
-                Text(
-                  "• Walk your dog daily for 30 minutes\n• Try a new training trick weekly\n• Track your pet’s weight weekly",
-                ),
-              ],
-            ),
-          ),
+        return buildCardContent(
+          title: "Challenges",
+          content:
+              "• Walk your dog daily for 30 minutes\n• Try a new training trick weekly\n• Track your pet’s weight weekly",
         );
       default:
-        return Container();
+        return const SizedBox.shrink();
     }
+  }
+
+  /// Helper widget for consistent card content display.
+  Widget buildCardContent({required String title, required String content}) {
+    return Card(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      margin: const EdgeInsets.symmetric(vertical: 6),
+      child: Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              title,
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            ),
+            const SizedBox(height: 10),
+            Text(content),
+          ],
+        ),
+      ),
+    );
   }
 
   @override
@@ -168,11 +157,12 @@ class HomeView extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // Greeting and dashboard label
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const Text(
-                      "Hello, Aman!",
+                      "Hello, Manita!",
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
@@ -190,7 +180,10 @@ class HomeView extends StatelessWidget {
                     ),
                   ],
                 ),
+
                 const SizedBox(height: 20),
+
+                // Featured Pets Section
                 const Text(
                   "Featured Pets",
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -258,21 +251,32 @@ class HomeView extends StatelessWidget {
                     },
                   ),
                 ),
+
                 const SizedBox(height: 24),
+
+                // Explore More Section
                 const Text(
                   "Explore More",
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 16),
+
+                // Tab Buttons for Explore More section
                 TabButton(
                   selectedTab: selectedTab,
                   onTabSelected: (index) {
                     context.read<HomeViewModel>().onTabTapped(index);
                   },
                 ),
+
                 const SizedBox(height: 24),
+
+                // Bottom content based on selected tab
                 buildBottomContent(selectedTab),
+
                 const SizedBox(height: 40),
+
+                // Add New Pet Button
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton.icon(
@@ -284,7 +288,7 @@ class HomeView extends StatelessWidget {
                       ),
                     ),
                     onPressed: () {
-                      // Navigate to Add New Pet
+                      // TODO: Implement Add New Pet Navigation
                     },
                     icon: const Icon(Icons.add, color: Colors.white),
                     label: const Text(
@@ -293,6 +297,7 @@ class HomeView extends StatelessWidget {
                     ),
                   ),
                 ),
+
                 const SizedBox(height: 20),
               ],
             ),

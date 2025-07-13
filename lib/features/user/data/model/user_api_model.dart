@@ -1,6 +1,6 @@
+import 'package:cura_pet/features/user/domain/entity/user_entity.dart';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:cura_pet/features/user/domain/entity/user_entity.dart';
 
 part 'user_api_model.g.dart';
 
@@ -10,11 +10,8 @@ class UserApiModel extends Equatable {
   final String? id;
 
   final String name;
-
   final String email;
-
   final String phone;
-
   final String? password;
 
   const UserApiModel({
@@ -25,33 +22,33 @@ class UserApiModel extends Equatable {
     required this.password,
   });
 
-  // factory UserApiModel.fromJson(Map<String, dynamic> json) =>
-  //     _$UserApiModelFromJson(json);
+  factory UserApiModel.fromJson(Map<String, dynamic> json) =>
+      _$UserApiModelFromJson(json);
 
-  // Map<String, dynamic> toJson() => _$UserApiModelToJson(this);
+  Map<String, dynamic> toJson() => _$UserApiModelToJson(this);
 
-  // Convert from API model to domain entity
+  //to entity
   UserEntity toEntity() {
     return UserEntity(
-      userId: id,
       name: name,
       email: email,
-      phone: phone,
       password: password ?? '',
+      phone: phone,
+      userId: id,
     );
   }
 
-  // Convert from domain entity to API model
+  // from Enity
   factory UserApiModel.fromEntity(UserEntity entity) {
     return UserApiModel(
-      id: entity.userId,
       name: entity.name,
-      email: entity.email,
       phone: entity.phone,
+      email: entity.email,
       password: entity.password,
     );
   }
 
   @override
-  List<Object?> get props => [id, name, email, phone, password];
+  // TODO: implement props
+  List<Object?> get props => [id, name, password, phone, email];
 }

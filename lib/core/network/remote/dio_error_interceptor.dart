@@ -3,41 +3,40 @@ import 'package:dio/dio.dart';
 class DioErrorInterceptor extends Interceptor {
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) {
+    DioException modifiedError;
+
     if (err.response != null) {
-      // If status code is 500 or above, use server error message if available
-      if (err.response!.statusCode != null &&
-          err.response!.statusCode! >= 500) {
-        err = DioException(
+      final statusCode = err.response?.statusCode ?? 0;
+      final serverMessage =
+          err.response?.data?['message'] ?? err.response?.statusMessage;
+
+      if (statusCode >= 500) {
+        modifiedError = DioException(
           requestOptions: err.requestOptions,
           response: err.response,
-          error:
-              err.response!.data?['message'] ??
-              err.response!.statusMessage ??
-              "Server error",
+          error: serverMessage ?? "Server error",
           type: err.type,
         );
       } else {
-        // For other errors with response (like 4xx), keep original or customize here
-        err = DioException(
+        modifiedError = DioException(
           requestOptions: err.requestOptions,
           response: err.response,
-          error:
-              err.response!.data?['message'] ??
-              err.response!.statusMessage ??
-              "Error occurred",
+          error: serverMessage ?? "Unexpected error",
           type: err.type,
         );
       }
     } else {
-      // Handle no response, usually network or connection errors
-      err = DioException(
+      // Handle network issues or no response
+      modifiedError = DioException(
         requestOptions: err.requestOptions,
-        error: "Connection error. Please check your internet connection.",
-        type: err.type,
+        error: "No internet connection or request timeout.",
+        type: DioExceptionType.unknown,
       );
     }
 
-    // Pass the modified error to the next handler
-    super.onError(err, handler);
+    // Log for debugging (optional)
+    print("Dio Interceptor Caught: ${modifiedError.error}");
+
+    return handler.next(modifiedError);
   }
 }

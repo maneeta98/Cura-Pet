@@ -1,24 +1,16 @@
-class LoginState {
+import 'package:equatable/equatable.dart';
+
+class LoginState extends Equatable {
   final bool isLoading;
   final bool isSuccess;
   final String? errorMessage;
 
   const LoginState({
-    required this.isLoading,
-    required this.isSuccess,
+    this.isLoading = false,
+    this.isSuccess = false,
     this.errorMessage,
   });
 
-  // Initial/default state
-  factory LoginState.initial() {
-    return const LoginState(
-      isLoading: false,
-      isSuccess: false,
-      errorMessage: null,
-    );
-  }
-
-  // Copy state with optional updates
   LoginState copyWith({
     bool? isLoading,
     bool? isSuccess,
@@ -30,4 +22,7 @@ class LoginState {
       errorMessage: errorMessage,
     );
   }
+
+  @override
+  List<Object?> get props => [isLoading, isSuccess, errorMessage];
 }

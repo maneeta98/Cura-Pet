@@ -2,6 +2,7 @@ import 'package:cura_pet/app/service_locator/service_locator.dart';
 import 'package:cura_pet/features/user/domain/usecase/user_register_usecase.dart';
 import 'package:cura_pet/features/user/presentation/view/login_view.dart';
 import 'package:cura_pet/features/user/presentation/view_model/login_view_model/login_view_model.dart';
+//import 'package:cura_pet/features/user/presentation/view_model/login_view_model/login_view_model.dart' hide LoginViewModel;
 import 'package:cura_pet/features/user/presentation/view_model/register_view_model/register_event.dart';
 import 'package:cura_pet/features/user/presentation/view_model/register_view_model/register_state.dart';
 import 'package:flutter/material.dart';

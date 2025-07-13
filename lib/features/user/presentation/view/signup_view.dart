@@ -1,11 +1,11 @@
+import 'package:cura_pet/features/user/presentation/view/login_view.dart';
 import 'package:cura_pet/features/user/presentation/view_model/register_view_model/register_event.dart';
 import 'package:cura_pet/features/user/presentation/view_model/register_view_model/register_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'login_view.dart';
 
 class SignupView extends StatefulWidget {
-  const SignupView({super.key});
+  const SignupView({Key? key}) : super(key: key);
 
   @override
   State<SignupView> createState() => _SignupViewState();
@@ -61,49 +61,26 @@ class _SignupViewState extends State<SignupView> {
                   const SizedBox(height: 20),
 
                   // Full Name
-                  TextFormField(
+                  _buildTextField(
                     controller: fullNameController,
-                    style: const TextStyle(color: Colors.white),
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: Colors.black38,
-                      labelText: 'Full Name',
-                      hintText: 'Enter your full name',
-                      labelStyle: const TextStyle(color: Colors.white),
-                      hintStyle: const TextStyle(color: Colors.white54),
-                      prefixIcon: const Icon(Icons.person, color: Colors.white),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                        borderSide: BorderSide.none,
-                      ),
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "Please enter your name";
-                      }
-                      return null;
-                    },
+                    label: 'Full Name',
+                    hint: 'Enter your full name',
+                    icon: Icons.person,
+                    validator:
+                        (value) =>
+                            value == null || value.isEmpty
+                                ? "Please enter your name"
+                                : null,
                   ),
 
                   const SizedBox(height: 18),
 
                   // Email
-                  TextFormField(
+                  _buildTextField(
                     controller: emailController,
-                    style: const TextStyle(color: Colors.white),
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: Colors.black38,
-                      labelText: "Email Address",
-                      hintText: "abc@gmail.com",
-                      labelStyle: const TextStyle(color: Colors.white),
-                      hintStyle: const TextStyle(color: Colors.white54),
-                      prefixIcon: const Icon(Icons.email, color: Colors.white),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                        borderSide: BorderSide.none,
-                      ),
-                    ),
+                    label: 'Email Address',
+                    hint: 'abc@gmail.com',
+                    icon: Icons.email,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return "Please enter a valid email address";
@@ -117,33 +94,23 @@ class _SignupViewState extends State<SignupView> {
                   const SizedBox(height: 18),
 
                   // Password
-                  TextFormField(
+                  _buildTextField(
                     controller: passwordController,
+                    label: 'Password',
+                    icon: Icons.lock,
                     obscureText: _obscurePassword,
-                    style: const TextStyle(color: Colors.white),
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: Colors.black38,
-                      labelText: 'Password',
-                      prefixIcon: const Icon(Icons.lock, color: Colors.white),
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          _obscurePassword
-                              ? Icons.visibility
-                              : Icons.visibility_off,
-                          color: Colors.white,
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            _obscurePassword = !_obscurePassword;
-                          });
-                        },
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _obscurePassword
+                            ? Icons.visibility
+                            : Icons.visibility_off,
+                        color: Colors.white,
                       ),
-                      labelStyle: const TextStyle(color: Colors.white),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                        borderSide: BorderSide.none,
-                      ),
+                      onPressed: () {
+                        setState(() {
+                          _obscurePassword = !_obscurePassword;
+                        });
+                      },
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -158,22 +125,11 @@ class _SignupViewState extends State<SignupView> {
                   const SizedBox(height: 18),
 
                   // Confirm Password
-                  TextFormField(
+                  _buildTextField(
                     controller: confirmPasswordController,
+                    label: 'Confirm Password',
+                    icon: Icons.lock,
                     obscureText: true,
-                    style: const TextStyle(color: Colors.white),
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: Colors.black38,
-                      labelText: 'Confirm Password',
-                      prefixIcon: const Icon(Icons.lock, color: Colors.white),
-                      suffixIcon: const Icon(Icons.check, color: Colors.white),
-                      labelStyle: const TextStyle(color: Colors.white),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                        borderSide: BorderSide.none,
-                      ),
-                    ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return "Please confirm your password";
@@ -187,21 +143,11 @@ class _SignupViewState extends State<SignupView> {
                   const SizedBox(height: 18),
 
                   // Phone Number
-                  TextFormField(
+                  _buildTextField(
                     controller: phoneNumberController,
-                    style: const TextStyle(color: Colors.white),
+                    label: 'Contact Number',
+                    icon: Icons.phone,
                     keyboardType: TextInputType.phone,
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: Colors.black38,
-                      labelText: "Contact Number",
-                      prefixIcon: const Icon(Icons.phone, color: Colors.white),
-                      labelStyle: const TextStyle(color: Colors.white),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                        borderSide: BorderSide.none,
-                      ),
-                    ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Phone number is required';
@@ -281,7 +227,7 @@ class _SignupViewState extends State<SignupView> {
 
                   const SizedBox(height: 16),
 
-                  // Google Sign Up
+                  // Google Sign Up Button
                   Center(
                     child: ElevatedButton.icon(
                       onPressed: () {
@@ -326,6 +272,39 @@ class _SignupViewState extends State<SignupView> {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildTextField({
+    required TextEditingController controller,
+    required String label,
+    String? hint,
+    required IconData icon,
+    bool obscureText = false,
+    Widget? suffixIcon,
+    TextInputType? keyboardType,
+    String? Function(String?)? validator,
+  }) {
+    return TextFormField(
+      controller: controller,
+      obscureText: obscureText,
+      style: const TextStyle(color: Colors.white),
+      decoration: InputDecoration(
+        filled: true,
+        fillColor: Colors.black38,
+        labelText: label,
+        hintText: hint,
+        prefixIcon: Icon(icon, color: Colors.white),
+        suffixIcon: suffixIcon,
+        labelStyle: const TextStyle(color: Colors.white),
+        hintStyle: const TextStyle(color: Colors.white54),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+          borderSide: BorderSide.none,
+        ),
+      ),
+      keyboardType: keyboardType,
+      validator: validator,
     );
   }
 }

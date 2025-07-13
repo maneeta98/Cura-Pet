@@ -2,6 +2,7 @@ import 'package:cura_pet/core/network/local/hive_service.dart';
 import 'package:cura_pet/features/user/data/data_source/user_data_source.dart';
 import 'package:cura_pet/features/user/data/model/user_hive_model.dart';
 import 'package:cura_pet/features/user/domain/entity/user_entity.dart';
+import 'package:cura_pet/main.dart';
 
 class UserLocalDataSource implements IUserDataSource {
   final HiveService _hiveService;

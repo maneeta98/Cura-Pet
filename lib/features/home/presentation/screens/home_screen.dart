@@ -1,9 +1,10 @@
 // lib/screens/home_screen.dart
 
+import 'package:cura_pet/features/home/presentation/bloc/home_cubit.dart';
+import 'package:cura_pet/features/home/presentation/bloc/home_state.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../bloc/home_cubit.dart';
-import '../bloc/home_state.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});

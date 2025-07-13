@@ -50,6 +50,10 @@ dependencies:
   json_serializable: 6.9.0
   get_it: ^8.0.3
   flutter_bloc: ^9.1.1
+  another_flushbar: ^1.12.30
+  test_cov_console: ^0.2.2
+  mocktail: ^1.0.4
+  bloc_test: ^10.0.0
 
 dev_dependencies:
   flutter_test:
