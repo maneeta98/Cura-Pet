@@ -1,309 +1,168 @@
-import 'package:cura_pet/features/home/presentation/view_model/home_state.dart';
-import 'package:cura_pet/features/home/presentation/view_model/home_view_model.dart';
-import 'package:cura_pet/shared/widgets/tab_button.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+// import 'package:cura_pet/features/home/presentation/view/home_page.dart';
+// import 'package:flutter/material.dart';
 
-class HomeView extends StatelessWidget {
-  HomeView({Key? key}) : super(key: key);
+// class SimpleLoginPage extends StatefulWidget {
+//   const SimpleLoginPage({super.key});
 
-  final List<Map<String, dynamic>> featuredPets = [
-    {
-      'name': 'Bella',
-      'breed': 'Golden Retriever',
-      'age': 3,
-      'imageUrl':
-          'https://www.vidavetcare.com/wp-content/uploads/sites/234/2022/04/golden-retriever-dog-breed-info.jpeg',
-    },
-    {
-      'name': 'Max',
-      'breed': 'Bulldog',
-      'age': 5,
-      'imageUrl':
-          'https://www.zigly.com/media/mageplaza/blog/post/b/u/bull_dog_101.png',
-    },
-    {
-      'name': 'Luna',
-      'breed': 'Siamese Cat',
-      'age': 2,
-      'imageUrl':
-          'https://images.wagwalkingweb.com/media/daily_wag/blog_articles/hero/1678934108.5188236/everything-you-need-to-know-about-siamese-cats.png',
-    },
-    {
-      'name': 'Charlie',
-      'breed': 'Beagle',
-      'age': 4,
-      'imageUrl':
-          'https://lirp.cdn-website.com/e5dbb6fb/dms3rep/multi/opt/coy-beagle-puppy-234x316.dm.edit_l8ICpI-400w.jpg',
-    },
-  ];
+//   @override
+//   State<SimpleLoginPage> createState() => _SimpleLoginPageState();
+// }
 
-  final List<Map<String, dynamic>> upcomingReminders = [
-    {
-      'title': 'Vaccination for Bella',
-      'date': 'Thu, Jul 1',
-      'time': '10:00 AM',
-      'status': 'Upcoming',
-    },
-    {
-      'title': 'Grooming for Max',
-      'date': 'Fri, Jul 2',
-      'time': '2:00 PM',
-      'status': 'Upcoming',
-    },
-  ];
+// class _SimpleLoginPageState extends State<SimpleLoginPage> {
+//   final _formKey = GlobalKey<FormState>();
+//   final nameController = TextEditingController();
+//   final passwordController = TextEditingController();
+//   bool _obscurePassword = true;
 
-  /// Builds the content below the tabs based on the selected tab index.
-  Widget buildBottomContent(int selectedTab) {
-    switch (selectedTab) {
-      case 0:
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children:
-              upcomingReminders.map((reminder) {
-                return Card(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  margin: const EdgeInsets.symmetric(vertical: 6),
-                  child: ListTile(
-                    title: Text(
-                      reminder['title'],
-                      style: const TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    subtitle: Text(
-                      '${reminder['date']} at ${reminder['time']}',
-                    ),
-                    leading: const Icon(
-                      Icons.notifications_active,
-                      color: Colors.green,
-                    ),
-                    trailing: Text(
-                      reminder['status'],
-                      style: TextStyle(
-                        color:
-                            reminder['status'] == 'Upcoming'
-                                ? Colors.green
-                                : Colors.grey,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                );
-              }).toList(),
-        );
-      case 1:
-        return buildCardContent(
-          title: "Pet Care Tips",
-          content:
-              "• Provide fresh water daily\n• Feed a balanced diet\n• Schedule regular vet checkups\n• Daily exercise and playtime",
-        );
-      case 2:
-        return buildCardContent(
-          title: "Challenges",
-          content:
-              "• Walk your dog daily for 30 minutes\n• Try a new training trick weekly\n• Track your pet’s weight weekly",
-        );
-      default:
-        return const SizedBox.shrink();
-    }
-  }
+//   @override
+//   void dispose() {
+//     nameController.dispose();
+//     passwordController.dispose();
+//     super.dispose();
+//   }
 
-  /// Helper widget for consistent card content display.
-  Widget buildCardContent({required String title, required String content}) {
-    return Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      margin: const EdgeInsets.symmetric(vertical: 6),
-      child: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              title,
-              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-            ),
-            const SizedBox(height: 10),
-            Text(content),
-          ],
-        ),
-      ),
-    );
-  }
+//   void _onLogin() {
+//     if (_formKey.currentState!.validate()) {
+//       ScaffoldMessenger.of(
+//         context,
+//       ).showSnackBar(const SnackBar(content: Text('Login Successful!')));
 
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<HomeViewModel, HomeState>(
-      builder: (context, state) {
-        final selectedTab = state.selectedIndex;
+//       Navigator.pushReplacement(
+//         context,
+//         MaterialPageRoute(builder: (context) => const HomePage()),
+//       );
+//     }
+//   }
 
-        return Scaffold(
-          appBar: AppBar(
-            title: const Text('CuraPet'),
-            backgroundColor: Colors.green,
-            centerTitle: true,
-            actions: [
-              IconButton(
-                icon: const Icon(Icons.logout),
-                tooltip: 'Logout',
-                onPressed: () {
-                  context.read<HomeViewModel>().logout(context);
-                },
-              ),
-            ],
-          ),
-          body: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Greeting and dashboard label
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      "Hello, Manita!",
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Row(
-                      children: const [
-                        Icon(Icons.pets, color: Colors.green),
-                        SizedBox(width: 4),
-                        Text(
-                          "Your pets' dashboard",
-                          style: TextStyle(fontSize: 16),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+//   final List<Map<String, dynamic>> featuredPets = const [
+//     {
+//       'name': 'Bella',
+//       'breed': 'Golden Retriever',
+//       'age': 3,
+//       'imageUrl':
+//           'https://www.vidavetcare.com/wp-content/uploads/sites/234/2022/04/golden-retriever-dog-breed-info.jpeg',
+//     },
+//     {
+//       'name': 'Max',
+//       'breed': 'Bulldog',
+//       'age': 5,
+//       'imageUrl':
+//           'https://www.zigly.com/media/mageplaza/blog/post/b/u/bull_dog_101.png',
+//     },
+//     {
+//       'name': 'Luna',
+//       'breed': 'Siamese Cat',
+//       'age': 2,
+//       'imageUrl':
+//           'https://images.wagwalkingweb.com/media/daily_wag/blog_articles/hero/1678934108.5188236/everything-you-need-to-know-about-siamese-cats.png',
+//     },
+//     {
+//       'name': 'Charlie',
+//       'breed': 'Beagle',
+//       'age': 4,
+//       'imageUrl':
+//           'https://lirp.cdn-website.com/e5dbb6fb/dms3rep/multi/opt/coy-beagle-puppy-234x316.dm.edit_l8ICpI-400w.jpg',
+//     },
+//   ];
 
-                const SizedBox(height: 20),
+//   final List<Map<String, dynamic>> upcomingReminders = const [
+//     {
+//       'title': 'Vaccination for Bella',
+//       'date': 'Thu, Jul 1',
+//       'time': '10:00 AM',
+//       'status': 'Upcoming',
+//     },
+//     {
+//       'title': 'Grooming for Max',
+//       'date': 'Fri, Jul 2',
+//       'time': '2:00 PM',
+//       'status': 'Upcoming',
+//     },
+//   ];
 
-                // Featured Pets Section
-                const Text(
-                  "Featured Pets",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 16),
-                SizedBox(
-                  height: 180,
-                  child: ListView.separated(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: featuredPets.length,
-                    separatorBuilder: (_, __) => const SizedBox(width: 12),
-                    itemBuilder: (context, index) {
-                      final pet = featuredPets[index];
-                      return SizedBox(
-                        width: 160,
-                        child: Card(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          elevation: 4,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              ClipRRect(
-                                borderRadius: const BorderRadius.vertical(
-                                  top: Radius.circular(12),
-                                ),
-                                child: Image.network(
-                                  pet['imageUrl'],
-                                  height: 100,
-                                  width: double.infinity,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      pet['name'],
-                                      style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16,
-                                      ),
-                                    ),
-                                    Text(
-                                      pet['breed'],
-                                      style: const TextStyle(
-                                        color: Colors.grey,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 4),
-                                    Text(
-                                      'Age: ${pet['age']} years',
-                                      style: const TextStyle(fontSize: 12),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       backgroundColor: Colors.white,
+//       body: Center(
+//         child: SingleChildScrollView(
+//           padding: const EdgeInsets.all(20),
+//           child: Form(
+//             key: _formKey,
+//             child: Column(
+//               mainAxisAlignment: MainAxisAlignment.center,
+//               children: [
+//                 const CircleAvatar(
+//                   radius: 50,
+//                   backgroundImage: AssetImage('assets/CURA PET.png'),
+//                 ),
+//                 const SizedBox(height: 20),
 
-                const SizedBox(height: 24),
+//                 // Name field
+//                 TextFormField(
+//                   controller: nameController,
+//                   decoration: const InputDecoration(
+//                     labelText: 'Name',
+//                     border: OutlineInputBorder(),
+//                     prefixIcon: Icon(Icons.person),
+//                   ),
+//                   validator:
+//                       (value) =>
+//                           value == null || value.isEmpty
+//                               ? 'Enter your name'
+//                               : null,
+//                 ),
+//                 const SizedBox(height: 20),
 
-                // Explore More Section
-                const Text(
-                  "Explore More",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 16),
+//                 // Password field
+//                 TextFormField(
+//                   controller: passwordController,
+//                   obscureText: _obscurePassword,
+//                   decoration: InputDecoration(
+//                     labelText: 'Password',
+//                     border: const OutlineInputBorder(),
+//                     prefixIcon: const Icon(Icons.lock),
+//                     suffixIcon: IconButton(
+//                       icon: Icon(
+//                         _obscurePassword
+//                             ? Icons.visibility
+//                             : Icons.visibility_off,
+//                       ),
+//                       onPressed: () {
+//                         setState(() {
+//                           _obscurePassword = !_obscurePassword;
+//                         });
+//                       },
+//                     ),
+//                   ),
+//                   validator:
+//                       (value) =>
+//                           (value == null || value.length < 6)
+//                               ? 'Password must be at least 6 characters'
+//                               : null,
+//                 ),
+//                 const SizedBox(height: 30),
 
-                // Tab Buttons for Explore More section
-                TabButton(
-                  selectedTab: selectedTab,
-                  onTabSelected: (index) {
-                    context.read<HomeViewModel>().onTabTapped(index);
-                  },
-                ),
-
-                const SizedBox(height: 24),
-
-                // Bottom content based on selected tab
-                buildBottomContent(selectedTab),
-
-                const SizedBox(height: 40),
-
-                // Add New Pet Button
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton.icon(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green,
-                      padding: const EdgeInsets.symmetric(vertical: 14),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                    onPressed: () {
-                      // TODO: Implement Add New Pet Navigation
-                    },
-                    icon: const Icon(Icons.add, color: Colors.white),
-                    label: const Text(
-                      "Add New Pet",
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
-                ),
-
-                const SizedBox(height: 20),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
-}
+//                 // Login button
+//                 SizedBox(
+//                   width: double.infinity,
+//                   child: ElevatedButton(
+//                     onPressed: _onLogin,
+//                     style: ElevatedButton.styleFrom(
+//                       padding: const EdgeInsets.symmetric(vertical: 15),
+//                       backgroundColor: Colors.cyan,
+//                     ),
+//                     child: const Text(
+//                       'Login',
+//                       style: TextStyle(fontSize: 18, color: Colors.white),
+//                     ),
+//                   ),
+//                 ),
+//               ],
+//             ),
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }
